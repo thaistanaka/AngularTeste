@@ -13,8 +13,8 @@ export class PrimeiroComponent implements OnInit {
   serverStatus: string = 'offline';
   name:string;
   serverCreated:boolean;
-  listName = "thais";
-  list = ["pedro", "victor"];
+  listName: string;
+  list = [];
 
   constructor() { }
 
@@ -31,7 +31,7 @@ export class PrimeiroComponent implements OnInit {
 
   clickStatus(){
     this.clicavel = this.clicavel + 1;
-    this.list.push(this.listName);
+    this.list.push(this.name);
     this.serverCreated = true;
   }
 
