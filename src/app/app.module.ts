@@ -3,7 +3,6 @@ import { PrimeiroComponent } from './primeiro/primeiro.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { RecipesComponent } from './recipes/recipes.component';
@@ -12,7 +11,12 @@ import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-it
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
+import { ShoppingListService } from './shopping-list/shopping-list.service';
+import { Routes, RouterModule } from '@angular/router';
 
+const appRoutes: Routes = [
+  {path: 'primeiro', component: PrimeiroComponent}
+];
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,10 +32,10 @@ import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.com
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    FormsModule
+    FormsModule,
+    RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [ShoppingListService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
