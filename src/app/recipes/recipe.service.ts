@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class RecipeService {
@@ -36,18 +36,16 @@ export class RecipeService {
   }
 
   fetchRecipes() {
-    this.http
+    return this.http
     .get<Recipe[]>('https://ng-course-recipe-book-b4565.firebaseio.com/recipes.json')
     .pipe(map(recipes => {
       return recipes.map(recipe => {
         return {...recipe, ingredients: recipe.ingredients ? recipe.ingredients : []};
       });
-    }))
-    .subscribe(
-      recipes => {
-        this.setRecipes(recipes);
-      }
-    );
+    }),
+    tap(recipes => {
+      this.setRecipes(recipes);
+    }));
   }
 
   setRecipes(recipes: Recipe[]) {
