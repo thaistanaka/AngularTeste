@@ -3,30 +3,17 @@ import { Recipe } from './recipe.model';
 import { Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
 import { Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { map, tap } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { map, tap, take, exhaustMap } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
-
-  private recipes: Recipe[] = [
-    new Recipe('Recipe Selected',
-    'This is simply a test',
-    'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2018/9/26/0/FNK_Tuscan-Chicken-Skillet_H2_s4x3.jpg.rend.hgtvcom.826.620.suffix/1537973085542.jpeg',
-    [
-      new Ingredient('a', 1),
-      new Ingredient('b', 2)
-    ]),
-    new Recipe('Another Recipe Selected',
-    'This is simply a test',
-    'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2018/9/26/0/FNK_Tuscan-Chicken-Skillet_H2_s4x3.jpg.rend.hgtvcom.826.620.suffix/1537973085542.jpeg',
-    [
-      new Ingredient('c', 3)
-    ])
-  ];
+  private recipes: Recipe[];
 
   constructor(private slService: ShoppingListService,
+              private authService: AuthService,
               private http: HttpClient) {}
 
   storeRecipes() {
@@ -37,15 +24,22 @@ export class RecipeService {
 
   fetchRecipes() {
     return this.http
-    .get<Recipe[]>('https://ng-course-recipe-book-b4565.firebaseio.com/recipes.json')
-    .pipe(map(recipes => {
-      return recipes.map(recipe => {
-        return {...recipe, ingredients: recipe.ingredients ? recipe.ingredients : []};
-      });
-    }),
-    tap(recipes => {
-      this.setRecipes(recipes);
-    }));
+      .get<Recipe[]>(
+        'https://ng-course-recipe-book-b4565.firebaseio.com/recipes.json'
+      )
+      .pipe(
+        map(recipes => {
+          return recipes.map(recipe => {
+            return {
+              ...recipe,
+              ingredients: recipe.ingredients ? recipe.ingredients : []
+            };
+        });
+      }),
+      tap(recipes => {
+        this.setRecipes(recipes);
+      })
+      );
   }
 
   setRecipes(recipes: Recipe[]) {
