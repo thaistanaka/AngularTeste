@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { RecipeService } from './../recipes/recipe.service';
+import { RecipeService } from '../recipes/recipe.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 

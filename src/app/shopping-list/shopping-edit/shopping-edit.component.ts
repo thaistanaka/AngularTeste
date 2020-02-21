@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
-import { ShoppingListService } from './../shopping-list.service';
-import { Ingredient } from './../../shared/ingredient.model';
+import { ShoppingListService } from '../shopping-list.service';
+import { Ingredient } from '../../shared/ingredient.model';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
