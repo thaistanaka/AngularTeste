@@ -21,27 +21,28 @@ export class AuthService {
   private tokenExpirationTimer: any;
 
   constructor(private http: HttpClient,
-              private router: Router) {}
+              private router: Router) { }
 
   signup(email: string, password: string) {
-    return this.http.post<AuthResponseData>(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + environment.firebaseAPIKey,
-      {
-        email: email,
-        password: password,
-        returnSecureToken: true
-      }
-    )
-    .pipe(
-      catchError(this.handleError),
-      tap(resData => {
-        this.handleAuthentication(
-          resData.email,
-          resData.localId,
-          resData.idToken,
-          +resData.expiresIn
-        );
-    }));
+    return this.http
+      .post<AuthResponseData>(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + environment.firebaseAPIKey,
+        {
+          email: email,
+          password: password,
+          returnSecureToken: true
+        }
+      )
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          this.handleAuthentication(
+            resData.email,
+            resData.localId,
+            resData.idToken,
+            +resData.expiresIn
+          );
+        }));
   }
 
   login(email: string, password: string) {
@@ -54,14 +55,14 @@ export class AuthService {
       })
       .pipe(
         catchError(this.handleError),
-      tap(resData => {
-        this.handleAuthentication(
-          resData.email,
-          resData.localId,
-          resData.idToken,
-          +resData.expiresIn
-        );
-      })
+        tap(resData => {
+          this.handleAuthentication(
+            resData.email,
+            resData.localId,
+            resData.idToken,
+            +resData.expiresIn
+          );
+        })
       );
   }
 
@@ -125,19 +126,19 @@ export class AuthService {
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
     if (!errorRes.error || !errorRes.error.error) {
-        return throwError(errorMessage);
-      }
+      return throwError(errorMessage);
+    }
     switch (errorRes.error.error.message) {
-        case 'EMAIL_EXISTS':
-          errorMessage = 'This email exists already.';
-          break;
-        case 'EMAIL_NOT_FOUND':
-          errorMessage = 'This email does not exist.';
-          break;
-        case 'INVALID_PASSWORD':
-          errorMessage = 'This password is not correct';
-          break;
-      }
+      case 'EMAIL_EXISTS':
+        errorMessage = 'This email exists already.';
+        break;
+      case 'EMAIL_NOT_FOUND':
+        errorMessage = 'This email does not exist.';
+        break;
+      case 'INVALID_PASSWORD':
+        errorMessage = 'This password is not correct';
+        break;
+    }
     return throwError(errorMessage);
   }
 }

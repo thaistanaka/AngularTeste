@@ -13,9 +13,13 @@ export class RecipeEditComponent implements OnInit {
   editMode: boolean;
   recipeForm: FormGroup;
 
+  get ingredientsControls() {
+    return (this.recipeForm.get('ingredients') as FormArray).controls;
+  }
+
   constructor(private route: ActivatedRoute,
-    private recipeService: RecipeService,
-    private router: Router) { }
+              private recipeService: RecipeService,
+              private router: Router) { }
 
   ngOnInit() {
     this.route.params.
@@ -34,7 +38,7 @@ export class RecipeEditComponent implements OnInit {
     let recipeDescription = '';
     let recipeIgredients = new FormArray([]);
 
-    if(this.editMode) {
+    if (this.editMode) {
       const recipe = this.recipeService.getRecipe(this.id);
       recipeName = recipe.name;
       recipeImagePath = recipe.imagePath;
@@ -70,14 +74,14 @@ export class RecipeEditComponent implements OnInit {
   }
 
   get controls() {
-    return (<FormArray>this.recipeForm.get('ingredients')).controls;
+    return (<FormArray> this.recipeForm.get('ingredients')).controls;
   }
 
   onAddIngredient() {
-    (<FormArray>this.recipeForm.get('ingredients')).push(
+    (<FormArray> this.recipeForm.get('ingredients')).push(
       new FormGroup({
-        'name': new FormControl(null,Validators.required),
-        'amount': new FormControl(null,[Validators.required,
+        'name': new FormControl(null, Validators.required),
+        'amount': new FormControl(null, [Validators.required,
           Validators.pattern(/^[1-9]+[0-9]*$/)])
       })
     );
@@ -88,6 +92,6 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onDeleteIngredient(index: number) {
-    (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
+    (<FormArray> this.recipeForm.get('ingredients')).removeAt(index);
   }
 }

@@ -10,7 +10,7 @@ import { PlaceholderDirective } from '../shared/placeholder/placeholder.directiv
   selector: 'app-auth',
   templateUrl: './auth.component.html'
 })
-export class AuthComponent implements OnDestroy{
+export class AuthComponent implements OnDestroy {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
@@ -46,7 +46,7 @@ export class AuthComponent implements OnDestroy{
         errorMessage => {
           console.log(errorMessage);
           this.error = errorMessage;
-          this.showErrorAlert(errorMessage);
+          // this.showErrorAlert(errorMessage);
           this.isLoading = false;
         }
       );
@@ -60,7 +60,7 @@ export class AuthComponent implements OnDestroy{
         errorMessage => {
           console.log(errorMessage);
           this.error = errorMessage;
-          this.showErrorAlert(errorMessage);
+          // this.showErrorAlert(errorMessage);
           this.isLoading = false;
         }
       );
@@ -73,22 +73,22 @@ export class AuthComponent implements OnDestroy{
     this.error = null;
   }
 
-  private showErrorAlert(message: string) {
-    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(
-      AlertComponent
-    );
+  // private showErrorAlert(message: string) {
+  //   const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(
+  //     AlertComponent
+  //   );
 
-    const hostViewContainerRef = this.alertHost.viewContainerRef;
-    hostViewContainerRef.clear();
+  //   const hostViewContainerRef = this.alertHost.viewContainerRef;
+  //   hostViewContainerRef.clear();
 
-    const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
+  //   const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
 
-    componentRef.instance.message = message;
-    this.closeSub = componentRef.instance.close.subscribe(() => {
-      this.closeSub.unsubscribe();
-      hostViewContainerRef.clear();
-    });
-  }
+  //   componentRef.instance.message = message;
+  //   this.closeSub = componentRef.instance.close.subscribe(() => {
+  //     this.closeSub.unsubscribe();
+  //     hostViewContainerRef.clear();
+  //   });
+  // }
 
   ngOnDestroy() {
     if (this.closeSub) {
